@@ -19,6 +19,28 @@ if AUTH_TYPE == "auth":
     auth = Auth()
 
 
+@app.before_request
+def before_request():
+    """ Method to handle requests before each request """
+    if auth is None:
+        return
+
+    # Paths that don't require authentication
+    excluded_paths = ['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
+    
+    # Check if path requires authentication
+    if not auth.require_auth(request.path, excluded_paths):
+        return
+
+    # Check for authorization header
+    if auth.authorization_header(request) is None:
+        abort(401)
+
+    # Check for current user
+    if auth.current_user(request) is None:
+        abort(403)
+
+
 @app.errorhandler(401)
 def unauthorized(error) -> str:
     """ Request unauthorized handler
