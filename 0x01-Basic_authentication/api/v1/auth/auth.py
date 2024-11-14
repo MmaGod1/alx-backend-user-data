@@ -17,7 +17,16 @@ class Auth:
             excluded_paths (List[str]):
                 List of paths that are excluded from authentication
         """
-        return False
+        if path is None:
+            return True
+        if not excluded_paths:
+            return True
+        # Remove trailing slashes
+        normalized_path = path.rstrip('/')
+        for exc_path in excluded_paths:
+            if exc_path.rstrip('/') == normalized_path:
+                return False
+        return True
 
     def authorization_header(self, request=None) -> str:
         """
