@@ -75,7 +75,8 @@ class BasicAuth(Auth):
         return (user_email, pswd)
 
     def user_object_from_credentials(self,
-                                     user_email: str, user_pwd: str) -> UserType:
+                                     user_email: str,
+                                     user_pwd: str) -> UserType:
         """
         Returns a User instance based on user_email and user_pwd.
         """
