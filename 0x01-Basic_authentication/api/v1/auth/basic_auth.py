@@ -78,9 +78,9 @@ class BasicAuth(Auth):
                                      user_email: str,
                                      user_pwd: str) -> UserType:
         """Returns the User instance based on user_email and user_pwd."""
-        if not isinstance(user_email, str) or user_email is None:
+        if user_email is None or not isinstance(user_email, str):
             return None
-        if not isinstance(user_pwd, str) or user_pwd is None:
+        if user_pwd is None or not isinstance(user_pwd, str):
             return None
 
         # Search for the user by email
@@ -88,7 +88,7 @@ class BasicAuth(Auth):
         if not user:
             return None
 
-        user = user[0]  # if a list returns, take the first match
+        user = user[0]
 
         # Check if the password matches
         if not user.is_valid_password(user_pwd):
