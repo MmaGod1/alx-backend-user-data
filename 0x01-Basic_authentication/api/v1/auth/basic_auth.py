@@ -8,6 +8,7 @@ from typing import TypeVar
 
 UserType = TypeVar('User')
 
+
 class BasicAuth(Auth):
     """ Inherits fro Auth class and
     performes a Basic Authentication.
