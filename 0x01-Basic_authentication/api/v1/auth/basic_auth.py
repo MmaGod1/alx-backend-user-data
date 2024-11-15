@@ -52,7 +52,8 @@ class BasicAuth(Auth):
                                  str) -> (str, str):
         """Extract user email and password from the Base64 decoded value.
         Args:
-            decoded_base64_authorization_header (str): The Base64 decoded string.
+            decoded_base64_authorization_header (str):
+             The Base64 decoded string.
 
         Returns:
             tuple: A tuple containing the user email and password,
@@ -65,6 +66,6 @@ class BasicAuth(Auth):
         if ':' not in decoded_base64_authorization_header:
             return (None, None)
 
-        # Split the string into email and password at the first ':'
+        # Split the str into email and password at the first ':'
         user_email, password = decoded_base64_authorization_header.split(':', 1)
         return (user_email, password)
