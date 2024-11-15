@@ -6,6 +6,7 @@ import base64
 from models.user import User
 from typing import TypeVar
 
+UserType = TypeVar('User')
 
 class BasicAuth(Auth):
     """ Inherits fro Auth class and
@@ -75,7 +76,7 @@ class BasicAuth(Auth):
     def user_object_from_credentials(self,
                                      user_email: str,
                                      user_pwd: str) -> UserType:
-        """Returns the User instance based on user_email and user_pwd."""       
+        """Returns the User instance based on user_email and user_pwd."""
         if not isinstance(user_email, str) or user_email is None:
             return None
         if not isinstance(user_pwd, str) or user_pwd is None:
@@ -85,7 +86,7 @@ class BasicAuth(Auth):
         user = User.search({'email': user_email})
         if not user:
             return None
-  
+
         user = user[0]  # if a list returns, take the first match
 
         # Check if the password matches
