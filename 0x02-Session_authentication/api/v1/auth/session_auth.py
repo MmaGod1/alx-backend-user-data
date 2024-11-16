@@ -3,7 +3,7 @@
 """
 from .auth import Auth
 import uuid
-
+from models.user import User
 
 class SessionAuth:
     """ Session Authentication mechanism."""
