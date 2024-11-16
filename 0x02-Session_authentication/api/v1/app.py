@@ -30,28 +30,28 @@ def before_request():
     """ Method to handle requests before each request """
     if auth is None:
         return
+    else:
+        # Set current user for the request
+        setattr(request, "current_user", auth.current_user(request))
 
-    # Set current user for the request
-    setattr(request, "current_user", auth.current_user(request))
-
-    # Paths that don't require authentication
-    excluded = [
-        '/api/v1/status/',
-        '/api/v1/unauthorized/',
-        '/api/v1/forbidden/',
-        '/api/v1/auth_session/login/',
-    ]
+        # Paths that don't require authentication
+        excluded = [
+            '/api/v1/status/',
+            '/api/v1/unauthorized/',
+            '/api/v1/forbidden/',
+            '/api/v1/auth_session/login/',
+        ]
     
-    # Check if the path requires authentication
-    if auth.require_auth(request.path, excluded):
-        # Check for authorization header or session cookie
-        cookie = auth.session_cookie(request)
-        if auth.authorization_header(request) is None and cookie is None:
-            abort(401, description="Unauthorized")
+        # Check if the path requires authentication
+        if auth.require_auth(request.path, excluded):
+            # Check for authorization header or session cookie
+            cookie = auth.session_cookie(request)
+            if auth.authorization_header(request) is None and cookie is None:
+                abort(401)
 
-        # Check for current user authentication
-        if auth.current_user(request) is None:
-            abort(403, description="Forbidden")
+            # Check for current user authentication
+            if auth.current_user(request) is None:
+                abort(403)
 
 
 @app.errorhandler(401)
