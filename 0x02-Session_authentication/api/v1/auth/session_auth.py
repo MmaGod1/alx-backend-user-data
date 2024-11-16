@@ -6,7 +6,8 @@ import uuid
 from typing import TypeVar
 from models.user import User
 
-class SessionAuth:
+
+class SessionAuth(Auth):
     """ Session Authentication mechanism."""
     user_id_by_session_id = {}
 
