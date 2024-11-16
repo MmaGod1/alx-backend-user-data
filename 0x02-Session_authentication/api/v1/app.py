@@ -31,29 +31,27 @@ def before_request():
     if auth is None:
         return
 
+    # Set current user for the request
+    setattr(request, "current_user", auth.current_user(request))
+
     # Paths that don't require authentication
-    excluded_paths = [
+    excluded = [
         '/api/v1/status/',
         '/api/v1/unauthorized/',
         '/api/v1/forbidden/',
-        '/api/v1/auth_session/login/',  # Added this path
+        '/api/v1/auth_session/login/',
     ]
+    
+    # Check if the path requires authentication
+    if auth.require_auth(request.path, excluded):
+        # Check for authorization header or session cookie
+        cookie = auth.session_cookie(request)
+        if auth.authorization_header(request) is None and cookie is None:
+            abort(401, description="Unauthorized")
 
-    # Check if path requires authentication
-    if not auth.require_auth(request.path, excluded_paths):
-        return
-
-    # Check for authorization header or session cookie
-    cookie = auth.session_cookie(request)
-    if auth.authorization_header(request) is None and cookie is None:
-        abort(401)
-
-    # Assign current user to request.current_user
-    request.current_user = auth.current_user(request)
-
-    # Check for current user authentication
-    if request.current_user is None:
-        abort(403)
+        # Check for current user authentication
+        if auth.current_user(request) is None:
+            abort(403, description="Forbidden")
 
 
 @app.errorhandler(401)
