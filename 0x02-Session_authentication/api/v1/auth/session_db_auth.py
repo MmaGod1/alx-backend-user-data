@@ -23,18 +23,19 @@ class SessionDBAuth(SessionExpAuth):
             return None
 
         from models.user_session import UserSession
-        if UserSession.__name__ not in DATA:
-            DATA[UserSession.__name__] = {}
+        UserSession.load_from_file()
 
-        # Search for the session
+        # Search for the session by session_id
         user_sessions = UserSession.search({"session_id": session_id})
         if not user_sessions:
             return None
 
+        # Retrieve the first matching session
         user_session = user_sessions[0]
         if self.session_duration <= 0:
             return user_session.user_id
 
+        # Check if session has expired
         created_at = user_session.created_at
         if not created_at:
             return None
@@ -43,7 +44,7 @@ class SessionDBAuth(SessionExpAuth):
         expiration_time = created_at + timedelta(seconds=self.session_duration)
         if datetime.utcnow() > expiration_time:
             return None
-    
+
         return user_session.user_id
 
     def destroy_session(self, request=None):
