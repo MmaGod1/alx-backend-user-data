@@ -40,7 +40,8 @@ def session_auth_login():
     return jsonify({"error": "wrong password"}), 401
 
 
-@app_views.route('/auth_session/logout', methods=['DELETE'], strict_slashes=False)
+@app_views.route('/auth_session/logout', methods=['DELETE'],
+                 strict_slashes=False)
 def session_logout():
     """ Handle user logout. """
     from api.v1.app import auth
