@@ -18,11 +18,9 @@ def session_auth_login():
 
     # Find the User(s) based on the email
     users = User.search({"email": email})
-    # If no user is found with the given email
     if not users:
         return jsonify({"error": "no user found for this email"}), 404
 
-    # Iterate over all users and check the password for each
     for user in users:
         if user.is_valid_password(password):
             from api.v1.app import auth
@@ -30,8 +28,6 @@ def session_auth_login():
 
             response = jsonify(user.to_json())
             session_name = os.getenv('SESSION_NAME', '_my_session_id')
-
-            # Set the session cookie
             response.set_cookie(session_name, session_id)
             return response
 
