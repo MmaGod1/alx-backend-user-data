@@ -1,9 +1,4 @@
-Here's a draft for your README based on the structure and format you've provided:
-
-
----
-
-Basic Authentication - Project 0x07
+# Sessions Authentication - Project 0x02
 
 Task 0: Et moi et moi et moi!
 Project Setup
