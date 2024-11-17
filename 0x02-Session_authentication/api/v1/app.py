@@ -23,6 +23,9 @@ elif AUTH_TYPE == "basic_auth":
 elif AUTH_TYPE == "session_auth":
     from api.v1.auth.session_auth import SessionAuth
     auth = SessionAuth()
+elif auth_type == "session_exp_auth":
+    from api.v1.auth.session_auth import SessionExpAuth
+    auth = SessionExpAuth()
 
 
 @app.before_request
@@ -44,7 +47,8 @@ def before_request():
         return
 
     # Check for authorization header or session cookie
-    if auth.authorization_header(request) is None and auth.session_cookie(request) is None:
+    cookie = auth.session_cookie(request)
+    if auth.authorization_header(request) is None and cookie is None:
         abort(401)
 
     request.current_user = auth.current_user(request)
