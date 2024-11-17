@@ -18,33 +18,33 @@ class SessionDBAuth(SessionExpAuth):
         return session_id
 
     def user_id_for_session_id(self, session_id=None):
-    """ Retrieve a user ID from the database using the session ID """
-    if session_id is None:
-        return None
+        """ Retrieve a user ID from the database using the session ID """
+        if session_id is None:
+            return None
 
-    from models.user_session import UserSession
-    if UserSession.__name__ not in DATA:
-        DATA[UserSession.__name__] = {}
+        from models.user_session import UserSession
+        if UserSession.__name__ not in DATA:
+            DATA[UserSession.__name__] = {}
 
-    # Search for the session
-    user_sessions = UserSession.search({"session_id": session_id})
-    if not user_sessions:
-        return None
+        # Search for the session
+        user_sessions = UserSession.search({"session_id": session_id})
+        if not user_sessions:
+            return None
 
-    user_session = user_sessions[0]
-    if self.session_duration <= 0:
+        user_session = user_sessions[0]
+        if self.session_duration <= 0:
+            return user_session.user_id
+
+        created_at = user_session.created_at
+        if not created_at:
+            return None
+
+        from datetime import datetime, timedelta
+        expiration_time = created_at + timedelta(seconds=self.session_duration)
+        if datetime.utcnow() > expiration_time:
+            return None
+    
         return user_session.user_id
-
-    created_at = user_session.created_at
-    if not created_at:
-        return None
-
-    from datetime import datetime, timedelta
-    expiration_time = created_at + timedelta(seconds=self.session_duration)
-    if datetime.utcnow() > expiration_time:
-        return None
-
-    return user_session.user_id
 
     def destroy_session(self, request=None):
         """ Destroy a session in the database """
