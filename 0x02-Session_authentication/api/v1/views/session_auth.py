@@ -8,15 +8,20 @@ from models.user import User
 
 @app_views.route('/auth_session/login', methods=['POST'], strict_slashes=False)
 def session_auth_login():
-    """ Handle user login and return response based on authentication """
+    """Handle user login and return response based on authentication"""
+    from flask import jsonify, request
+    import os
+    from models.user import User
+
+    # Retrieve email and password from the form
     email = request.form.get('email')
     password = request.form.get('password')
+
     if not email:
         return jsonify({"error": "email missing"}), 400
     if not password:
         return jsonify({"error": "password missing"}), 400
 
-    # Find the User(s) based on the email
     users = User.search({"email": email})
     if not users:
         return jsonify({"error": "no user found for this email"}), 404
@@ -31,7 +36,7 @@ def session_auth_login():
             response.set_cookie(session_name, session_id)
             return response
 
-    # If no valid password is found, return an error
+    # Return error if no valid password is found
     return jsonify({"error": "wrong password"}), 401
 
 
