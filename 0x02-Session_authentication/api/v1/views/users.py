@@ -28,7 +28,6 @@ def view_one_user(user_id: str = None) -> str:
       - 404 if the User ID doesn't exist
     """
     if user_id is None:
-    if user_id is None:
         abort(404)
 
     # Handle 'me' as the user_id
