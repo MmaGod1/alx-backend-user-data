@@ -126,7 +126,8 @@ def update_password(email: str, reset_token: str, new_password: str) -> None:
             the reset token provided during the password reset request.
         new_password (str): The new password to set for the user.
     """
-    data = {"email": email, "reset_token": reset_token, "new_password": new_password}
+    data = {"email": email, "reset_token": reset_token,
+            "new_password": new_password}
     response = requests.put(f"{BASE_URL}/reset_password", data=data)
     assert response.status_code == 200
     assert response.json() == {"email": email, "message": "Password updated"}
