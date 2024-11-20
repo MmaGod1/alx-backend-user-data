@@ -37,7 +37,7 @@ def register_user():
 
 
 @app.route('/sessions', methods=['POST'])
-def login():
+def login() -> str:
     """Handles user login."""
     email = request.form.get('email')
     password = request.form.get('password')
