@@ -9,6 +9,7 @@ from user import Base, User
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import InvalidRequestError
 
+
 class DB:
     """DB class
     """
@@ -67,7 +68,7 @@ class DB:
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """
-        Update a user's attributes based on the given user_id and keyword arguments.
+        Update a user's attributes based on the user_id and keyword arguments.
         Args:
             user_id (int): The user's ID to update.
             **kwargs: Arbitrary keyword arguments to update user attributes.
