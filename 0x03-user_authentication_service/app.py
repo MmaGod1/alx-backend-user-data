@@ -36,7 +36,7 @@ def register_user():
         }), 201
     except ValueError as err:
         # Handle the case where the email is already registered
-        return jsonify({"message": str(err)}), 400
+        return jsonify({"message": "email already registered"}), 400
 
 
 if __name__ == "__main__":
