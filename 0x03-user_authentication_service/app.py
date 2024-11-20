@@ -30,7 +30,7 @@ def register_user():
         return jsonify({
             "email": user.email,
             "message": "user created"
-        }), 201
+        })
     except ValueError:
         # Handle the case where the email is already registered
         return jsonify({"message": "email already registered"}), 400
