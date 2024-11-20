@@ -103,7 +103,7 @@ def get_reset_password_token() -> str:
     return jsonify({"email": f"{email}", "reset_token": f"{reset_token}"})
 
 
-@app.route('/reset_password', methods=['PUT'])
+@app.route("/reset_password", methods=["PUT"])
 def update_password() -> str:
     """
     Handle the PUT /reset_password route to update the user's password.
