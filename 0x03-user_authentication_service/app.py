@@ -117,8 +117,7 @@ def update_password():
     email = request.form.get('email')
     reset_token = request.form.get('reset_token')
     new_password = request.form.get('new_password')
-
-try:
+    try:
         AUTH.update_password(reset_token, new_password)
     except ValueError:
         abort(403)
