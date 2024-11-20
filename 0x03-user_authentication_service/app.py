@@ -2,11 +2,7 @@
 """
 Flask app
 """
-from flask import (
-    Flask, jsonify,
-    request, abort,
-    make_response, redirect
-)
+from flask import Flask, jsonify, request, abort, make_response, redirect
 from auth import Auth
 
 app = Flask(__name__)
@@ -15,7 +11,7 @@ AUTH = Auth()
 
 @app.route("/", methods=["GET"])
 def hello() -> str:
-    """ Return json respomse"""
+    """Return json respomse"""
     return jsonify({"message": "Bienvenue"})
 
 
@@ -31,37 +27,31 @@ def register_user() -> str:
     try:
         # Attempt to register the user using the Auth class
         user = AUTH.register_user(email, password)
-        return jsonify({
-            "email": user.email,
-            "message": "user created"
-        })
+        return jsonify({"email": user.email, "message": "user created"})
     except ValueError:
         # Handle the case where the email is already registered
         return jsonify({"message": "email already registered"}), 400
 
 
-@app.route('/sessions', methods=['POST'])
+@app.route("/sessions", methods=["POST"])
 def login() -> str:
     """Handles user login."""
-    email = request.form.get('email')
-    password = request.form.get('password')
+    email = request.form.get("email")
+    password = request.form.get("password")
 
     if not AUTH.valid_login(email, password):
         abort(401)
 
     session_id = AUTH.create_session(email)
-    response = make_response(jsonify({
-        'email': email,
-        'message': 'logged in'
-    }))
-    response.set_cookie('session_id', session_id)
+    response = make_response(jsonify({"email": email, "message": "logged in"}))
+    response.set_cookie("session_id", session_id)
 
     return response
 
 
-@app.route('/sessions', methods=['DELETE'])
+@app.route("/sessions", methods=["DELETE"])
 def logout():
-    session_id = request.cookies.get('session_id')
+    session_id = request.cookies.get("session_id")
 
     if session_id is None:
         abort(403)
@@ -71,13 +61,13 @@ def logout():
         abort(403)
 
     AUTH.destroy_session(user.id)
-    return redirect('/')
+    return redirect("/")
 
 
-@app.route('/profile', methods=['GET'])
+@app.route("/profile", methods=["GET"])
 def profile() -> str:
     """Responds to the GET /profile route."""
-    session_id = request.cookies.get('session_id')
+    session_id = request.cookies.get("session_id")
 
     if session_id is None:
         abort(403)
@@ -89,7 +79,7 @@ def profile() -> str:
     return jsonify({"email": user.email}), 200
 
 
-@app.route('/reset_password', methods=['POST'])
+@app.route("/reset_password", methods=["POST"])
 def get_reset_password_token() -> str:
     """
     Handle POST /reset_password route
