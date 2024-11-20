@@ -35,7 +35,7 @@ class DB:
         Create a new user and save it to the database
         Args:
             email (str): user's email address
-            hashed_password (str): user hashed password 
+            hashed_password (str): user hashed password
         Return: the User object
         """
         new_user = User(email=email, hashed_password=hashed_password)
