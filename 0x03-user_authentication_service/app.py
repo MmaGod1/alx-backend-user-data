@@ -95,17 +95,12 @@ def get_reset_password_token():
     Handle POST /reset_password route
     """
     email = request.form.get("email")
-    if not email:
-        abort(403)
-
     try:
-        # Generate reset token
         reset_token = AUTH.get_reset_password_token(email)
-        return jsonify({"email": email, "reset_token": reset_token}), 200
     except ValueError:
-        # Email not registered
         abort(403)
 
+    return jsonify({"email": f"{email}", "reset_token": f"{reset_token}"})
 
 @app.route('/reset_password', methods=['PUT'])
 def update_password():
