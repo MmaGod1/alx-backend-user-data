@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""DB module
+""" DB module
 """
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -29,3 +29,16 @@ class DB:
             DBSession = sessionmaker(bind=self._engine)
             self.__session = DBSession()
         return self.__session
+
+    def add_user(self, email, hashed_password):
+        """Adds new users to the database
+        Args: email (str) users email
+              hashed_password (str) user hashed password
+        Return: the created user object.
+        """
+        new_user = User(email=email, hashed_password=hashed_password)
+        # Add the user to the session
+        self._session.add(new_user)
+        self._session.commit()
+
+        return new_user        
