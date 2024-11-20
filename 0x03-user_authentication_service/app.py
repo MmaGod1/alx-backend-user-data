@@ -20,7 +20,7 @@ def hello() -> str:
 
 
 @app.route("/users", methods=["POST"])
-def register_user():
+def register_user() -> str:
     """
     Endpoint to register a user.
     Expects email and password in form data.
@@ -75,7 +75,7 @@ def logout():
 
 
 @app.route('/profile', methods=['GET'])
-def profile():
+def profile() -> str:
     """Responds to the GET /profile route."""
     session_id = request.cookies.get('session_id')
 
@@ -90,7 +90,7 @@ def profile():
 
 
 @app.route('/reset_password', methods=['POST'])
-def get_reset_password_token():
+def get_reset_password_token() -> str:
     """
     Handle POST /reset_password route
     """
