@@ -3,9 +3,9 @@
 Flask app
 """
 from flask import (
-Flask, jsonify,
-request, abort,
-make_response, redirect
+    Flask, jsonify,
+    request, abort,
+    make_response, redirect
 )
 from auth import Auth
 
@@ -55,7 +55,7 @@ def login() -> str:
         'message': 'logged in'
     }))
     response.set_cookie('session_id', session_id)
-    
+
     return response
 
 
@@ -125,6 +125,6 @@ def update_password():
 
     return jsonify({"email": f"{email}", "message": "Password updated"})
 
-    
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
